@@ -17,9 +17,9 @@ func (c *ConfigApp) GetListLogs() []*LogSet {
 	return c.Common.Logs
 }
 
-// GetZabbix настройки взаимодействия с Zabbix
-func (c *ConfigApp) GetZabbix() *CfgZabbix {
-	return &c.Zabbix
+// GetService настройки взаимодействия с некоторым сервисом
+func (c *ConfigApp) GetService() *CfgService {
+	return &c.Service
 }
 
 // SetNameMessageType наименование типа логирования
