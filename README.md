@@ -1,6 +1,6 @@
-# Enricher_zin
+# **Application_template**... (здесь новое наименование приложения)
 
-Сервис 'enricher_zin' выполняет запросы по изменению или обогащению данных хранящихся в Zabbix.
+Сервис '**Application_template**' выполняет...
 
 ## Конфигурационные настройки
 
@@ -13,34 +13,29 @@
 - config_dev.yml это конфигурационный файл, используемый при развертывании тестовой инфраструктуры, максимально приближенной к продуктовой;
 - config_prod.yml это конфигурационный файл, применяемый в продуктовом режиме.
 
-Основная переменная окружения для данного приложения - GO_ENRICHERZIN_MAIN. На основании значения этой переменной принимается решение какой из конфигурационных файлов config_dev.yml или config_prod.yml использовать. При GO_ENRICHERZIN_MAIN=development будет использоваться config_dev.yml, при GO_ENRICHERZIN_MAIN=test будет использоваться config_test.yml соответственно. Во всех остальных случаях, в том числе и при отсутствии переменной окружения GO_ENRICHERZIN_MAIN будет использоваться конфигурационный файл config_prod.yml. Перечень переменных окружения которые можно использовать для настройки приложения:
+Основная переменная окружения для данного приложения - GO-**APPLICATIONTEMPLATE**-MAIN. На основании значения этой переменной принимается решение какой из конфигурационных файлов config_dev.yml или config_prod.yml использовать. При GO-**APPLICATIONTEMPLATE**-MAIN=development будет использоваться config_dev.yml, при GO-**APPLICATIONTEMPLATE**-MAIN=test будет использоваться config_test.yml соответственно. Во всех остальных случаях, в том числе и при отсутствии переменной окружения GO-**APPLICATIONTEMPLATE**-MAIN будет использоваться конфигурационный файл config_prod.yml. Перечень переменных окружения которые можно использовать для настройки приложения:
 
 #### Переменная окружения отвечающая за тип запуска приложения "development", "test" или "production"
 
-- GO_ENRICHERZIN_MAIN
+- GO-**APPLICATIONTEMPLATE**-MAIN
 
-#### Переменные окружения отвечающие за доступ к Zabbix
+#### Переменные окружения отвечающие за...
 
-- GO_ENRICHERZIN_ZHOST - доменное имя или ip
-- GO_ENRICHERZIN_ZPORT - сетевой порт
-- GO_ENRICHERZIN_ZUSER - имя пользователя для авторизации
-- GO_ENRICHERZIN_ZPASSWD - пароль
+- GO-**APPLICATIONTEMPLATE**-<сервис>HOST - доменное имя или ip
+- GO-**APPLICATIONTEMPLATE**-<сервис>PORT - сетевой порт
+- GO-**APPLICATIONTEMPLATE**-<сервис>USER - имя пользователя для авторизации
+- GO-**APPLICATIONTEMPLATE**-<сервис>PASSWD - пароль
 
-#### Переменные окружения отвечающие за доступ к NetBox
-
-- GO_ENRICHERZIN_NBHOST - доменное имя или ip
-- GO_ENRICHERZIN_NBPORT - сетевой порт
-- GO_ENRICHERZIN_NBUSER - имя пользователя для авторизации
-- GO_ENRICHERZIN_NBPASSWD - пароль
+...
 
 #### Переменные окружения отвечающие за настройку доступа к БД применяемой для хранения логов
 
-- GO_ENRICHERZIN_DBWLOGHOST - доменное имя или ip
-- GO_ENRICHERZIN_DBWLOGPORT - сетевой порт
-- GO_ENRICHERZIN_DBWLOGNAME - наименование БД (при необходимости)
-- GO_ENRICHERZIN_DBWLOGUSER - пользователь
-- GO_ENRICHERZIN_DBWLOGPASSWD - пароль
-- GO_ENRICHERZIN_DBWLOGSTORAGENAME - наименование объекта хранения логов (таблица, документ, индекс и т.д. зависит от типа БД)
+- GO-**APPLICATIONTEMPLATE**-DBWLOGHOST - доменное имя или ip
+- GO-**APPLICATIONTEMPLATE**-DBWLOGPORT - сетевой порт
+- GO-**APPLICATIONTEMPLATE**-DBWLOGNAME - наименование БД (при необходимости)
+- GO-**APPLICATIONTEMPLATE**-DBWLOGUSER - пользователь
+- GO-**APPLICATIONTEMPLATE**-DBWLOGPASSWD - пароль
+- GO-**APPLICATIONTEMPLATE**-DBWLOGSTORAGENAME - наименование объекта хранения логов (таблица, документ, индекс и т.д. зависит от типа БД)
 
 Настройки логирования данных в БД не являются обязательными и необходимы только если пользователь приложения желает хранить логи в базе данных.
 
