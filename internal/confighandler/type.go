@@ -2,10 +2,9 @@ package confighandler
 
 // ConfigApp конфигурационные настройки приложения
 type ConfigApp struct {
-	Common CfgCommon
-	LogDB  CfgWriteLogDB
-	Zabbix CfgZabbix
-	NetBox CfgNetBox
+	Common  CfgCommon
+	LogDB   CfgWriteLogDB
+	Service CfgService
 }
 
 // CfgCommon общие настройки
@@ -37,16 +36,8 @@ type CfgWriteLogDB struct {
 	Port          int    `validate:"gt=0,lte=65535" yaml:"port"`
 }
 
-// CfgZabbix настройки доступа к Zabbix
-type CfgZabbix struct {
-	Host   string `validate:"required" yaml:"host"`
-	User   string `validate:"required" yaml:"user"`
-	Passwd string `validate:"required"`
-	Port   int    `validate:"gt=0,lte=65535" yaml:"port"`
-}
-
-// CfgNetBox настройки доступа к NetBox
-type CfgNetBox struct {
+// CfgService настройки доступа к некоторому сервису
+type CfgService struct {
 	Host   string `validate:"required" yaml:"host"`
 	User   string `validate:"required" yaml:"user"`
 	Passwd string `validate:"required"`

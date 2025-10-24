@@ -3,7 +3,7 @@ package logginghandler
 import (
 	"context"
 
-	"github.com/av-belyakov/enricher_zin/interfaces"
+	"github.com/av-belyakov/application_template/interfaces"
 )
 
 // New конструктор обработки логов

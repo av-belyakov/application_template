@@ -7,17 +7,17 @@ import (
 
 	"github.com/av-belyakov/simplelogger"
 
-	"github.com/av-belyakov/enricher_zin/constants"
-	"github.com/av-belyakov/enricher_zin/internal/confighandler"
-	"github.com/av-belyakov/enricher_zin/internal/elasticsearchapi"
-	"github.com/av-belyakov/enricher_zin/internal/logginghandler"
-	"github.com/av-belyakov/enricher_zin/internal/supportingfunctions"
-	"github.com/av-belyakov/enricher_zin/internal/wrappers"
+	"github.com/av-belyakov/application_template/constants"
+	"github.com/av-belyakov/application_template/internal/confighandler"
+	"github.com/av-belyakov/application_template/internal/elasticsearchapi"
+	"github.com/av-belyakov/application_template/internal/logginghandler"
+	"github.com/av-belyakov/application_template/internal/supportingfunctions"
+	"github.com/av-belyakov/application_template/internal/wrappers"
 )
 
 func app(ctx context.Context) {
 	var nameRegionalObject string
-	if os.Getenv("GO_ENRICHERZIN_MAIN") == "development" {
+	if os.Getenv("GO_"+constants.Application_Name+"_MAIN") == "development" {
 		nameRegionalObject = "enricher_zin-dev"
 	} else {
 		nameRegionalObject = "enricher_zin"
@@ -64,16 +64,19 @@ func app(ctx context.Context) {
 		simpleLogger.SetDataBaseInteraction(esc)
 	}
 
-	// ************************************************************************
-	// ************* инициализация модуля взаимодействия с Zabbix *************
+	// ***************************************************************************
+	// ************* инициализация модуля взаимодействия с Service 1 *************
 
-	// ************************************************************************
-	// ************* инициализация модуля взаимодействия с NetBox *************
+	// ***************************************************************************
+	// ************* инициализация модуля взаимодействия с Service 2 *************
 
 	//***************************************************************************
 	//************** инициализация обработчика логирования данных ***************
 	logging := logginghandler.New(simpleLogger)
 	logging.Start(ctx)
+
+	//******************************************************************
+	//************** инициализация маршрутизатора данных ***************
 
 	//вывод информационного сообщения
 	msg := getInformationMessage(conf)

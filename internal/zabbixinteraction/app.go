@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/av-belyakov/enricher_zin/internal/wrappers"
+	"github.com/av-belyakov/application_template/internal/wrappers"
 )
 
 // NewZabbixConnectionJsonRPC создает объект соединения с Zabbix API

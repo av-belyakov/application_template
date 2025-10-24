@@ -1,4 +1,4 @@
-module github.com/av-belyakov/enricher_zin
+module github.com/av-belyakov/application_template
 
 go 1.25.3
 

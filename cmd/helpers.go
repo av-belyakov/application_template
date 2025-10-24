@@ -6,10 +6,10 @@ import (
 	"os"
 	"strings"
 
-	"github.com/av-belyakov/enricher_zin/constants"
-	"github.com/av-belyakov/enricher_zin/internal/appname"
-	"github.com/av-belyakov/enricher_zin/internal/appversion"
-	"github.com/av-belyakov/enricher_zin/internal/confighandler"
+	"github.com/av-belyakov/application_template/constants"
+	"github.com/av-belyakov/application_template/internal/appname"
+	"github.com/av-belyakov/application_template/internal/appversion"
+	"github.com/av-belyakov/application_template/internal/confighandler"
 )
 
 func getInformationMessage(conf *confighandler.ConfigApp) string {
@@ -35,27 +35,15 @@ func getInformationMessage(conf *confighandler.ConfigApp) string {
 		constants.Ansi_Reset,
 	)
 	fmt.Printf(
-		"%vConnect to Zabbix with address %v%s:%d%v%v, user %v'%s'%v\n",
+		"%vConnect to some Service with address %v%s:%d%v%v, user %v'%s'%v\n",
 		constants.Ansi_Bright_Green,
 		constants.Ansi_Dark_Gray,
-		conf.Zabbix.Host,
-		conf.Zabbix.Port,
+		conf.Service.Host,
+		conf.Service.Port,
 		constants.Ansi_Reset,
 		constants.Ansi_Bright_Green,
 		constants.Ansi_Dark_Gray,
-		conf.Zabbix.User,
-		constants.Ansi_Reset,
-	)
-	fmt.Printf(
-		"%vConnect to NetBox with address %v%s:%d%v%v, user %v'%s'%v\n",
-		constants.Ansi_Bright_Green,
-		constants.Ansi_Dark_Gray,
-		conf.NetBox.Host,
-		conf.NetBox.Port,
-		constants.Ansi_Reset,
-		constants.Ansi_Bright_Green,
-		constants.Ansi_Dark_Gray,
-		conf.NetBox.User,
+		conf.Service.User,
 		constants.Ansi_Reset,
 	)
 

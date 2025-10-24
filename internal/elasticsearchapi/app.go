@@ -13,8 +13,8 @@ import (
 	"github.com/elastic/go-elasticsearch/v8"
 	"github.com/elastic/go-elasticsearch/v8/esapi"
 
-	"github.com/av-belyakov/enricher_zin/internal/supportingfunctions"
-	"github.com/av-belyakov/enricher_zin/internal/wrappers"
+	"github.com/av-belyakov/application_template/internal/supportingfunctions"
+	"github.com/av-belyakov/application_template/internal/wrappers"
 )
 
 // NewElasticsearchConnect конструктор соединения с БД Elasticsearch
