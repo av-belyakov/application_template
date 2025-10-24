@@ -1,0 +1,54 @@
+# Что бы передать переменные при запуске docker-compose.yml файда нужно
+# выполнить 
+# APPLICATION_NAME=some_name TYPE_EXECUTION=some_type_exec docker-compose -f docker-compose.example.yml up -d
+
+services:
+  app:
+    # меняем имя контейнера на имя будущего приложения
+    container_name: ${APPLICATION_NAME:-application_template}.${TYPE_EXECUTION:-prod}
+    env_file:
+      .env
+    environment:
+      GO_APPLICATION_TEMPLATE_DBWLOGPASSWD: $GO_APPTEMP_DBWLOGPASSWD
+      GO_APPLICATION_TEMPLATE_PASSWD: $GO_APPTEMP_PASSWD
+      GO_APPLICATION_TEMPLATE_TOKEN: $GO_APPTEMP_TOKEN
+    # меняем путь к образу на путь к образу будущего приложения
+    image: gitlab.cloud.gcm:5050/a.belyakov/${APPLICATION_NAME:-application_template}:latest
+    restart: unless-stopped
+    # пробрасываем user ID для корректной записи в логов
+    user: root
+    command: chmod 777 /opt/${APPLICATION_NAME:-application_template}/logs && \
+             chown 1500:1500 /opt/${APPLICATION_NAME:-application_template}/logs
+    volumes:
+      - /var/log/${APPLICATION_NAME:-application_template}.${TYPE_EXECUTION:-prod}:/opt/${APPLICATION_NAME:-application_template}/logs:rw
+      - ./config:/opt/${APPLICATION_NAME:-application_template}/config:rw
+      # выполняем для корректного отображения даты с учетом временной зоны
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    network_mode: "host"
+    #networks:
+    #  - app-network
+    #depends_on:
+    #  - database
+
+#  database:
+#    image: some-database:latest
+#    container_name: major-database
+#    restart: unless-stopped
+#    command: >
+#      здесь 
+#      перечень 
+#      выполняемых команд
+#    networks:
+#      - app-network
+#    ports:
+#      - 8181:8080
+#    environment:
+#      DYNAMIC_CONFIG_ENABLED: 'true'
+#    volumes:
+#      - /etc/timezone:/etc/timezone:ro
+#      - /etc/localtime:/etc/localtime:ro
+
+#networks:
+#  app-network:
+#    driver: bridge
