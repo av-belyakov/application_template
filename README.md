@@ -13,29 +13,29 @@
 - config_dev.yml это конфигурационный файл, используемый при развертывании тестовой инфраструктуры, максимально приближенной к продуктовой;
 - config_prod.yml это конфигурационный файл, применяемый в продуктовом режиме.
 
-Основная переменная окружения для данного приложения - GO-**APPLICATIONTEMPLATE**-MAIN. На основании значения этой переменной принимается решение какой из конфигурационных файлов config_dev.yml или config_prod.yml использовать. При GO-**APPLICATIONTEMPLATE**-MAIN=development будет использоваться config_dev.yml, при GO-**APPLICATIONTEMPLATE**-MAIN=test будет использоваться config_test.yml соответственно. Во всех остальных случаях, в том числе и при отсутствии переменной окружения GO-**APPLICATIONTEMPLATE**-MAIN будет использоваться конфигурационный файл config_prod.yml. Перечень переменных окружения которые можно использовать для настройки приложения:
+Основная переменная окружения для данного приложения - 'GO\_**APPLICATIONTEMPLATE**\_MAIN'. На основании значения этой переменной принимается решение какой из конфигурационных файлов config_dev.yml или config_prod.yml использовать. При 'GO\_**APPLICATIONTEMPLATE**\_MAIN'=development будет использоваться config_dev.yml, при 'GO\_**APPLICATIONTEMPLATE**\_MAIN'=test будет использоваться config_test.yml соответственно. Во всех остальных случаях, в том числе и при отсутствии переменной окружения 'GO\_**APPLICATIONTEMPLATE**\_MAIN' будет использоваться конфигурационный файл config_prod.yml. Перечень переменных окружения которые можно использовать для настройки приложения:
 
 #### Переменная окружения отвечающая за тип запуска приложения "development", "test" или "production"
 
-- GO-**APPLICATIONTEMPLATE**-MAIN
+- 'GO\_**APPLICATIONTEMPLATE**\_MAIN'
 
 #### Переменные окружения отвечающие за...
 
-- GO-**APPLICATIONTEMPLATE**-<сервис>HOST - доменное имя или ip
-- GO-**APPLICATIONTEMPLATE**-<сервис>PORT - сетевой порт
-- GO-**APPLICATIONTEMPLATE**-<сервис>USER - имя пользователя для авторизации
-- GO-**APPLICATIONTEMPLATE**-<сервис>PASSWD - пароль
+- 'GO\_**APPLICATIONTEMPLATE**\_SHOST' - доменное имя или ip
+- 'GO\_**APPLICATIONTEMPLATE**\_SPORT' - сетевой порт
+- 'GO\_**APPLICATIONTEMPLATE**\_SUSER' - имя пользователя для авторизации
+- 'GO\_**APPLICATIONTEMPLATE**\_SPASSWD' - пароль
 
 ...
 
 #### Переменные окружения отвечающие за настройку доступа к БД применяемой для хранения логов
 
-- GO-**APPLICATIONTEMPLATE**-DBWLOGHOST - доменное имя или ip
-- GO-**APPLICATIONTEMPLATE**-DBWLOGPORT - сетевой порт
-- GO-**APPLICATIONTEMPLATE**-DBWLOGNAME - наименование БД (при необходимости)
-- GO-**APPLICATIONTEMPLATE**-DBWLOGUSER - пользователь
-- GO-**APPLICATIONTEMPLATE**-DBWLOGPASSWD - пароль
-- GO-**APPLICATIONTEMPLATE**-DBWLOGSTORAGENAME - наименование объекта хранения логов (таблица, документ, индекс и т.д. зависит от типа БД)
+- 'GO\_**APPLICATIONTEMPLATE**\_DBWLOGHOST' - доменное имя или ip
+- 'GO\_**APPLICATIONTEMPLATE**\_DBWLOGPORT' - сетевой порт
+- 'GO\_**APPLICATIONTEMPLATE**\_DBWLOGNAME' - наименование БД (при необходимости)
+- 'GO\_**APPLICATIONTEMPLATE**\_DBWLOGUSER' - пользователь
+- 'GO\_**APPLICATIONTEMPLATE**\_DBWLOGPASSWD' - пароль
+- 'GO\_**APPLICATIONTEMPLATE**\_DBWLOGSTORAGENAME' - наименование объекта хранения логов (таблица, документ, индекс и т.д. зависит от типа БД)
 
 Настройки логирования данных в БД не являются обязательными и необходимы только если пользователь приложения желает хранить логи в базе данных.
 
