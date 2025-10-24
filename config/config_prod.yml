@@ -1,0 +1,14 @@
+Zabbix:
+  host: 192.168.9.45
+  port: 80
+  user: 803.p.vishnitsky@avz-center.ru
+NetBox:
+  host:
+  port:
+  user:
+WriteLogDataBase:
+  host: datahook.cloud.gcm
+  port: 9200
+  user: log_writer
+  namedb:
+  storage_name_db: enricher_zin
