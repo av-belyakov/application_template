@@ -1,8 +1,8 @@
 package constants
 
 const (
-	Root_Dir = "application_template"
-
+	Root_Dir         = "application_template"
+	Application      = "application_template"
 	Application_Name = "APPLICATIONTEMPLATE"
 
 	Ansi_Reset                 = "\033[0m"

@@ -2,12 +2,14 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 
 	"github.com/av-belyakov/simplelogger"
 
 	"github.com/av-belyakov/application_template/constants"
+	"github.com/av-belyakov/application_template/internal/appname"
 	"github.com/av-belyakov/application_template/internal/confighandler"
 	"github.com/av-belyakov/application_template/internal/elasticsearchapi"
 	"github.com/av-belyakov/application_template/internal/logginghandler"
@@ -18,9 +20,9 @@ import (
 func app(ctx context.Context) {
 	var nameRegionalObject string
 	if os.Getenv("GO_"+constants.Application_Name+"_MAIN") == "development" {
-		nameRegionalObject = "enricher_zin-dev"
+		nameRegionalObject = fmt.Sprintf("%s-dev", appname.GetName())
 	} else {
-		nameRegionalObject = "enricher_zin"
+		nameRegionalObject = appname.GetName()
 	}
 
 	rootPath, err := supportingfunctions.GetRootPath(constants.Root_Dir)
