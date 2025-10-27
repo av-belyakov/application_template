@@ -24,7 +24,7 @@ func getInformationMessage(conf *confighandler.ConfigApp) string {
 		appStatus = fmt.Sprintf("%v%s%v", constants.Ansi_Bright_Red, envValue, constants.Ansi_Reset)
 	}
 
-	msg := fmt.Sprintf("Application '%s' v%s was successfully launched", appname.GetName(), strings.Replace(version, "\n", "", -1))
+	msg := fmt.Sprintf("Application '%s' v%s was successfully launched", appname.GetName(), strings.ReplaceAll(version, "\n", ""))
 
 	fmt.Printf("\n%v%v%s%v\n", constants.Bold_Font, constants.Ansi_Bright_Green, msg, constants.Ansi_Reset)
 	fmt.Printf(
