@@ -3,8 +3,8 @@ Service:
   port: 80
   user: user-name
 WriteLogDataBase:
-  host: datahook.cloud.gcm
+  host: database.cloud.example
   port: 9200
   user: log_writer
   namedb:
-  storage_name_db: enricher_zin
+  storage_name_db: application_template_db

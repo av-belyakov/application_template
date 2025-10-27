@@ -1,4 +1,4 @@
-package zabbix
+package applicationtamplateexample_test
 
 import "testing"
 

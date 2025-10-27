@@ -54,7 +54,7 @@ func app(ctx context.Context) {
 		Port:               confDB.Port,
 		Host:               confDB.Host,
 		User:               confDB.User,
-		Passwd:             confDB.Passwd,
+		Passwd:             conf.GetAuthenticationData().WriteLogBDPasswd,
 		IndexDB:            confDB.StorageNameDB,
 		NameRegionalObject: nameRegionalObject,
 	}); err != nil {
