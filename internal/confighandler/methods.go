@@ -22,6 +22,11 @@ func (c *ConfigApp) GetService() *CfgService {
 	return &c.Service
 }
 
+// GetAuthenticationData авторизационные данные
+func (c *ConfigApp) GetAuthenticationData() *CfgAuthenticationData {
+	return &c.AuthenticationData
+}
+
 // SetNameMessageType наименование типа логирования
 func (l *LogSet) SetNameMessageType(v string) error {
 	if v == "" {
