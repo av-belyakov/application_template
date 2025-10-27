@@ -3,15 +3,17 @@ module github.com/av-belyakov/application_template
 go 1.25.3
 
 require (
+	github.com/av-belyakov/simplelogger v0.0.0-20250924090323-6ab0607b4a4b
+	github.com/elastic/go-elasticsearch/v8 v8.19.0
 	github.com/go-playground/validator/v10 v10.28.0
+	github.com/joho/godotenv v1.5.1
 	github.com/spf13/viper v1.21.0
+	github.com/stretchr/testify v1.11.1
 )
 
 require (
-	github.com/av-belyakov/simplelogger v0.0.0-20250924090323-6ab0607b4a4b // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/elastic/elastic-transport-go/v8 v8.7.0 // indirect
-	github.com/elastic/go-elasticsearch/v8 v8.19.0 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.10 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
@@ -35,4 +37,5 @@ require (
 	golang.org/x/crypto v0.42.0 // indirect
 	golang.org/x/sys v0.36.0 // indirect
 	golang.org/x/text v0.29.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

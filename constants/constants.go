@@ -3,7 +3,7 @@ package constants
 const (
 	Root_Dir = "application_template"
 
-	Application_Name = "APPLICATION_TEMPLATE"
+	Application_Name = "APPLICATIONTEMPLATE"
 
 	Ansi_Reset                 = "\033[0m"
 	Ansi_White                 = "\033[97m"

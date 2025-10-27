@@ -12,6 +12,7 @@ import (
 
 	"github.com/av-belyakov/application_template/constants"
 	"github.com/av-belyakov/application_template/internal/supportingfunctions"
+	"github.com/av-belyakov/application_template/internal/wrappers"
 )
 
 func New(rootDir string) (*ConfigApp, error) {
@@ -22,18 +23,21 @@ func New(rootDir string) (*ConfigApp, error) {
 		envList  map[string]string = map[string]string{
 			"GO_" + constants.Application_Name + "_MAIN": "",
 
-			//Подключение к некоторому сервису Service
-			"GO_" + constants.Application_Name + "_SHOST":   "",
-			"GO_" + constants.Application_Name + "_SPORT":   "",
-			"GO_" + constants.Application_Name + "_SUSER":   "",
-			"GO_" + constants.Application_Name + "_SPASSWD": "",
+			// Получение авторизационных данных
+			"GO_" + constants.Application_Name + "_TOKEN":        "",
+			"GO_" + constants.Application_Name + "_PASSWD":       "",
+			"GO_" + constants.Application_Name + "_DBWLOGPASSWD": "",
 
-			//Настройки доступа к БД в которую будут записыватся логи
+			// Подключение к некоторому сервису Service
+			"GO_" + constants.Application_Name + "_SHOST": "",
+			"GO_" + constants.Application_Name + "_SPORT": "",
+			"GO_" + constants.Application_Name + "_SUSER": "",
+
+			// Настройки доступа к БД в которую будут записыватся логи
 			"GO_" + constants.Application_Name + "_DBWLOGHOST":        "",
 			"GO_" + constants.Application_Name + "_DBWLOGPORT":        "",
 			"GO_" + constants.Application_Name + "_DBWLOGNAME":        "",
 			"GO_" + constants.Application_Name + "_DBWLOGUSER":        "",
-			"GO_" + constants.Application_Name + "_DBWLOGPASSWD":      "",
 			"GO_" + constants.Application_Name + "_DBWLOGSTORAGENAME": "",
 		}
 	)
@@ -74,7 +78,7 @@ func New(rootDir string) (*ConfigApp, error) {
 			return err
 		}
 
-		//Настройки для модуля подключения к некоторому сервису
+		// Настройки для модуля подключения к некоторому сервису
 		if viper.IsSet("Service.host") {
 			conf.Service.Host = viper.GetString("Service.host")
 		}
@@ -115,23 +119,23 @@ func New(rootDir string) (*ConfigApp, error) {
 
 	rootPath, err := supportingfunctions.GetRootPath(rootDir)
 	if err != nil {
-		return conf, err
+		return conf, wrappers.WrapperError(err)
 	}
 
 	confPath := filepath.Join(rootPath, "config")
 	list, err := os.ReadDir(confPath)
 	if err != nil {
-		return conf, err
+		return conf, wrappers.WrapperError(err)
 	}
 
 	fileNameCommon, err := getFileName("config.yml", confPath, list)
 	if err != nil {
-		return conf, err
+		return conf, wrappers.WrapperError(err)
 	}
 
-	//читаем общий конфигурационный файл
+	//чтение общего конфигурационного файла
 	if err := setCommonSettings(fileNameCommon); err != nil {
-		return conf, err
+		return conf, wrappers.WrapperError(err)
 	}
 
 	var fn string
@@ -139,25 +143,39 @@ func New(rootDir string) (*ConfigApp, error) {
 	case "development":
 		fn, err = getFileName("config_dev.yml", confPath, list)
 		if err != nil {
-			return conf, err
+			return conf, wrappers.WrapperError(err)
 		}
+
 	case "test":
 		fn, err = getFileName("config_test.yml", confPath, list)
 		if err != nil {
-			return conf, err
+			return conf, wrappers.WrapperError(err)
 		}
+
 	default:
 		fn, err = getFileName("config_prod.yml", confPath, list)
 		if err != nil {
-			return conf, err
+			return conf, wrappers.WrapperError(err)
 		}
+
 	}
 
 	if err := setSpecial(fn); err != nil {
-		return conf, err
+		return conf, wrappers.WrapperError(err)
 	}
 
-	//Настройки для модуля подключения к некоторому сервису
+	// Настройки получения авторизационной информации
+	if envList["GO_"+constants.Application_Name+"_TOKEN"] != "" {
+		conf.AuthenticationData.SomeToken = envList["GO_"+constants.Application_Name+"_TOKEN"]
+	}
+	if envList["GO_"+constants.Application_Name+"_PASSWD"] != "" {
+		conf.AuthenticationData.ServicePasswd = envList["GO_"+constants.Application_Name+"_PASSWD"]
+	}
+	if envList["GO_"+constants.Application_Name+"_DBWLOGPASSWD"] != "" {
+		conf.AuthenticationData.WriteLogBDPasswd = envList["GO_"+constants.Application_Name+"_DBWLOGPASSWD"]
+	}
+
+	// Настройки для модуля подключения к некоторому сервису Service
 	if envList["GO_"+constants.Application_Name+"_SHOST"] != "" {
 		conf.Service.Host = envList["GO_"+constants.Application_Name+"_SHOST"]
 	}
@@ -169,11 +187,8 @@ func New(rootDir string) (*ConfigApp, error) {
 	if envList["GO_"+constants.Application_Name+"_SUSER"] != "" {
 		conf.Service.User = envList["GO_"+constants.Application_Name+"_SUSER"]
 	}
-	if envList["GO_"+constants.Application_Name+"_SPASSWD"] != "" {
-		conf.Service.Passwd = envList["GO_"+constants.Application_Name+"_SPASSWD"]
-	}
 
-	//Настройки доступа к БД в которую будут записыватся логи
+	// Настройки доступа к БД в которую будут записыватся логи
 	if envList["GO_"+constants.Application_Name+"_DBWLOGHOST"] != "" {
 		conf.LogDB.Host = envList["GO_"+constants.Application_Name+"_DBWLOGHOST"]
 	}
@@ -188,16 +203,13 @@ func New(rootDir string) (*ConfigApp, error) {
 	if envList["GO_"+constants.Application_Name+"_DBWLOGUSER"] != "" {
 		conf.LogDB.User = envList["GO_"+constants.Application_Name+"_DBWLOGUSER"]
 	}
-	if envList["GO_"+constants.Application_Name+"_DBWLOGPASSWD"] != "" {
-		conf.LogDB.Passwd = envList["GO_"+constants.Application_Name+"_DBWLOGPASSWD"]
-	}
 	if envList["GO_"+constants.Application_Name+"_DBWLOGSTORAGENAME"] != "" {
 		conf.LogDB.StorageNameDB = envList["GO_"+constants.Application_Name+"_DBWLOGSTORAGENAME"]
 	}
 
-	//выполняем проверку заполненой структуры
+	//выполнение проверки заполненой структуры
 	if err = validate.Struct(conf); err != nil {
-		return conf, err
+		return conf, wrappers.WrapperError(err)
 	}
 
 	return conf, nil
