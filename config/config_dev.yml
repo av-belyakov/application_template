@@ -1,10 +1,10 @@
 Service:
-  host: localhost
-  port: 80
-  user: user-name
+  host: localhost.dev
+  port: 88
+  user: user-name.dev
 WriteLogDataBase:
-  host: datahook.cloud.gcm
-  port: 9200
-  user: log_writer
+  host: database.cloud.example.dev
+  port: 9202
+  user: log_writer.dev
   namedb:
-  storage_name_db: enricher_zin
+  storage_name_db: application_template_db.dev

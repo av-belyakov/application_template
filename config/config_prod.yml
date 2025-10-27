@@ -1,10 +1,10 @@
 ZabbiService:
-  host: localhost
-  port: 80
-  user: user-name
+  host: localhost.prod
+  port: 888
+  user: user-name.prod
 WriteLogDataBase:
-  host: datahook.cloud.gcm
+  host: database.cloud.example.prod
   port: 9200
-  user: log_writer
+  user: log_writer.prod
   namedb:
-  storage_name_db: enricher_zin
+  storage_name_db: application_template_db.prod
