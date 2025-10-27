@@ -19,7 +19,7 @@ import (
 
 func app(ctx context.Context) {
 	var nameRegionalObject string
-	if os.Getenv("GO_"+constants.Application_Name+"_MAIN") == "development" {
+	if os.Getenv("GO_"+constants.App_Environment_Name+"_MAIN") == "development" {
 		nameRegionalObject = fmt.Sprintf("%s-dev", appname.GetName())
 	} else {
 		nameRegionalObject = appname.GetName()

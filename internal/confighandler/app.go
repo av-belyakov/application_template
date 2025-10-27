@@ -21,24 +21,24 @@ func New(rootDir string) (*ConfigApp, error) {
 	var (
 		validate *validator.Validate
 		envList  map[string]string = map[string]string{
-			"GO_" + constants.Application_Name + "_MAIN": "",
+			"GO_" + constants.App_Environment_Name + "_MAIN": "",
 
 			// Получение авторизационных данных
-			"GO_" + constants.Application_Name + "_TOKEN":        "",
-			"GO_" + constants.Application_Name + "_PASSWD":       "",
-			"GO_" + constants.Application_Name + "_DBWLOGPASSWD": "",
+			"GO_" + constants.App_Environment_Name + "_TOKEN":        "",
+			"GO_" + constants.App_Environment_Name + "_PASSWD":       "",
+			"GO_" + constants.App_Environment_Name + "_DBWLOGPASSWD": "",
 
 			// Подключение к некоторому сервису Service
-			"GO_" + constants.Application_Name + "_SHOST": "",
-			"GO_" + constants.Application_Name + "_SPORT": "",
-			"GO_" + constants.Application_Name + "_SUSER": "",
+			"GO_" + constants.App_Environment_Name + "_SHOST": "",
+			"GO_" + constants.App_Environment_Name + "_SPORT": "",
+			"GO_" + constants.App_Environment_Name + "_SUSER": "",
 
 			// Настройки доступа к БД в которую будут записыватся логи
-			"GO_" + constants.Application_Name + "_DBWLOGHOST":        "",
-			"GO_" + constants.Application_Name + "_DBWLOGPORT":        "",
-			"GO_" + constants.Application_Name + "_DBWLOGNAME":        "",
-			"GO_" + constants.Application_Name + "_DBWLOGUSER":        "",
-			"GO_" + constants.Application_Name + "_DBWLOGSTORAGENAME": "",
+			"GO_" + constants.App_Environment_Name + "_DBWLOGHOST":        "",
+			"GO_" + constants.App_Environment_Name + "_DBWLOGPORT":        "",
+			"GO_" + constants.App_Environment_Name + "_DBWLOGNAME":        "",
+			"GO_" + constants.App_Environment_Name + "_DBWLOGUSER":        "",
+			"GO_" + constants.App_Environment_Name + "_DBWLOGSTORAGENAME": "",
 		}
 	)
 
@@ -139,7 +139,7 @@ func New(rootDir string) (*ConfigApp, error) {
 	}
 
 	var fn string
-	switch envList["GO_"+constants.Application_Name+"_MAIN"] {
+	switch envList["GO_"+constants.App_Environment_Name+"_MAIN"] {
 	case "development":
 		fn, err = getFileName("config_dev.yml", confPath, list)
 		if err != nil {
@@ -165,46 +165,46 @@ func New(rootDir string) (*ConfigApp, error) {
 	}
 
 	// Настройки получения авторизационной информации
-	if envList["GO_"+constants.Application_Name+"_TOKEN"] != "" {
-		conf.AuthenticationData.SomeToken = envList["GO_"+constants.Application_Name+"_TOKEN"]
+	if envList["GO_"+constants.App_Environment_Name+"_TOKEN"] != "" {
+		conf.AuthenticationData.SomeToken = envList["GO_"+constants.App_Environment_Name+"_TOKEN"]
 	}
-	if envList["GO_"+constants.Application_Name+"_PASSWD"] != "" {
-		conf.AuthenticationData.ServicePasswd = envList["GO_"+constants.Application_Name+"_PASSWD"]
+	if envList["GO_"+constants.App_Environment_Name+"_PASSWD"] != "" {
+		conf.AuthenticationData.ServicePasswd = envList["GO_"+constants.App_Environment_Name+"_PASSWD"]
 	}
-	if envList["GO_"+constants.Application_Name+"_DBWLOGPASSWD"] != "" {
-		conf.AuthenticationData.WriteLogBDPasswd = envList["GO_"+constants.Application_Name+"_DBWLOGPASSWD"]
+	if envList["GO_"+constants.App_Environment_Name+"_DBWLOGPASSWD"] != "" {
+		conf.AuthenticationData.WriteLogBDPasswd = envList["GO_"+constants.App_Environment_Name+"_DBWLOGPASSWD"]
 	}
 
 	// Настройки для модуля подключения к некоторому сервису Service
-	if envList["GO_"+constants.Application_Name+"_SHOST"] != "" {
-		conf.Service.Host = envList["GO_"+constants.Application_Name+"_SHOST"]
+	if envList["GO_"+constants.App_Environment_Name+"_SHOST"] != "" {
+		conf.Service.Host = envList["GO_"+constants.App_Environment_Name+"_SHOST"]
 	}
-	if envList["GO_"+constants.Application_Name+"_SPORT"] != "" {
-		if p, err := strconv.Atoi(envList["GO_"+constants.Application_Name+"_SPORT"]); err == nil {
+	if envList["GO_"+constants.App_Environment_Name+"_SPORT"] != "" {
+		if p, err := strconv.Atoi(envList["GO_"+constants.App_Environment_Name+"_SPORT"]); err == nil {
 			conf.Service.Port = p
 		}
 	}
-	if envList["GO_"+constants.Application_Name+"_SUSER"] != "" {
-		conf.Service.User = envList["GO_"+constants.Application_Name+"_SUSER"]
+	if envList["GO_"+constants.App_Environment_Name+"_SUSER"] != "" {
+		conf.Service.User = envList["GO_"+constants.App_Environment_Name+"_SUSER"]
 	}
 
 	// Настройки доступа к БД в которую будут записыватся логи
-	if envList["GO_"+constants.Application_Name+"_DBWLOGHOST"] != "" {
-		conf.LogDB.Host = envList["GO_"+constants.Application_Name+"_DBWLOGHOST"]
+	if envList["GO_"+constants.App_Environment_Name+"_DBWLOGHOST"] != "" {
+		conf.LogDB.Host = envList["GO_"+constants.App_Environment_Name+"_DBWLOGHOST"]
 	}
-	if envList["GO_"+constants.Application_Name+"_DBWLOGPORT"] != "" {
-		if p, err := strconv.Atoi(envList["GO_"+constants.Application_Name+"_DBWLOGPORT"]); err == nil {
+	if envList["GO_"+constants.App_Environment_Name+"_DBWLOGPORT"] != "" {
+		if p, err := strconv.Atoi(envList["GO_"+constants.App_Environment_Name+"_DBWLOGPORT"]); err == nil {
 			conf.LogDB.Port = p
 		}
 	}
-	if envList["GO_"+constants.Application_Name+"_DBWLOGNAME"] != "" {
-		conf.LogDB.NameDB = envList["GO_"+constants.Application_Name+"_DBWLOGNAME"]
+	if envList["GO_"+constants.App_Environment_Name+"_DBWLOGNAME"] != "" {
+		conf.LogDB.NameDB = envList["GO_"+constants.App_Environment_Name+"_DBWLOGNAME"]
 	}
-	if envList["GO_"+constants.Application_Name+"_DBWLOGUSER"] != "" {
-		conf.LogDB.User = envList["GO_"+constants.Application_Name+"_DBWLOGUSER"]
+	if envList["GO_"+constants.App_Environment_Name+"_DBWLOGUSER"] != "" {
+		conf.LogDB.User = envList["GO_"+constants.App_Environment_Name+"_DBWLOGUSER"]
 	}
-	if envList["GO_"+constants.Application_Name+"_DBWLOGSTORAGENAME"] != "" {
-		conf.LogDB.StorageNameDB = envList["GO_"+constants.Application_Name+"_DBWLOGSTORAGENAME"]
+	if envList["GO_"+constants.App_Environment_Name+"_DBWLOGSTORAGENAME"] != "" {
+		conf.LogDB.StorageNameDB = envList["GO_"+constants.App_Environment_Name+"_DBWLOGSTORAGENAME"]
 	}
 
 	//выполнение проверки заполненой структуры

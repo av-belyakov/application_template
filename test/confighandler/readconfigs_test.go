@@ -26,7 +26,7 @@ func TestMain(m *testing.M) {
 		log.Fatalln(err)
 	}
 
-	os.Setenv("GO_"+constants.Application_Name+"_MAIN", "test")
+	os.Setenv("GO_"+constants.App_Environment_Name+"_MAIN", "test")
 
 	conf, err = confighandler.New(constants.Root_Dir)
 	if err != nil {
@@ -65,9 +65,9 @@ func TestReadConfigHandler(t *testing.T) {
 			password := "superStrongPassWd"
 			passwdForDb := "superStrongPassWdForDatabAse"
 
-			os.Setenv("GO_"+constants.Application_Name+"_TOKEN", token)
-			os.Setenv("GO_"+constants.Application_Name+"_PASSWD", password)
-			os.Setenv("GO_"+constants.Application_Name+"_DBWLOGPASSWD", passwdForDb)
+			os.Setenv("GO_"+constants.App_Environment_Name+"_TOKEN", token)
+			os.Setenv("GO_"+constants.App_Environment_Name+"_PASSWD", password)
+			os.Setenv("GO_"+constants.App_Environment_Name+"_DBWLOGPASSWD", passwdForDb)
 
 			conf, err := confighandler.New(constants.Root_Dir)
 			assert.NoError(t, err)
@@ -78,9 +78,9 @@ func TestReadConfigHandler(t *testing.T) {
 		})
 
 		t.Run("Тест 2. Проверка настройки некоторого сервиса", func(t *testing.T) {
-			os.Setenv("GO_"+constants.Application_Name+"_SHOST", "127.0.0.1")
-			os.Setenv("GO_"+constants.Application_Name+"_SPORT", "4242")
-			os.Setenv("GO_"+constants.Application_Name+"_SUSER", "some_user_service")
+			os.Setenv("GO_"+constants.App_Environment_Name+"_SHOST", "127.0.0.1")
+			os.Setenv("GO_"+constants.App_Environment_Name+"_SPORT", "4242")
+			os.Setenv("GO_"+constants.App_Environment_Name+"_SUSER", "some_user_service")
 
 			conf, err := confighandler.New(constants.Root_Dir)
 			assert.NoError(t, err)
@@ -91,11 +91,11 @@ func TestReadConfigHandler(t *testing.T) {
 		})
 
 		t.Run("Тест 3. Проверка настройки WriteLogDataBase", func(t *testing.T) {
-			os.Setenv("GO_"+constants.Application_Name+"_DBWLOGHOST", "domaniname.database.cm")
-			os.Setenv("GO_"+constants.Application_Name+"_DBWLOGPORT", "8989")
-			os.Setenv("GO_"+constants.Application_Name+"_DBWLOGUSER", "somebody_user")
-			os.Setenv("GO_"+constants.Application_Name+"_DBWLOGNAME", "any_name_db")
-			os.Setenv("GO_"+constants.Application_Name+"_DBWLOGSTORAGENAME", "log_storage")
+			os.Setenv("GO_"+constants.App_Environment_Name+"_DBWLOGHOST", "domaniname.database.cm")
+			os.Setenv("GO_"+constants.App_Environment_Name+"_DBWLOGPORT", "8989")
+			os.Setenv("GO_"+constants.App_Environment_Name+"_DBWLOGUSER", "somebody_user")
+			os.Setenv("GO_"+constants.App_Environment_Name+"_DBWLOGNAME", "any_name_db")
+			os.Setenv("GO_"+constants.App_Environment_Name+"_DBWLOGSTORAGENAME", "log_storage")
 
 			conf, err := confighandler.New(constants.Root_Dir)
 			assert.NoError(t, err)
@@ -115,22 +115,22 @@ func TestReadConfigHandler(t *testing.T) {
 
 func unSetEnviroment() {
 	// Тип запуска приложения
-	os.Unsetenv("GO_" + constants.Application_Name + "_MAIN")
+	os.Unsetenv("GO_" + constants.App_Environment_Name + "_MAIN")
 
 	// Подключение к некоторому сервису Service
-	os.Unsetenv("GO_" + constants.Application_Name + "_SHOST")
-	os.Unsetenv("GO_" + constants.Application_Name + "_SPORT")
-	os.Unsetenv("GO_" + constants.Application_Name + "_SUSER")
+	os.Unsetenv("GO_" + constants.App_Environment_Name + "_SHOST")
+	os.Unsetenv("GO_" + constants.App_Environment_Name + "_SPORT")
+	os.Unsetenv("GO_" + constants.App_Environment_Name + "_SUSER")
 
 	// Настройки доступа к БД в которую будут записыватся логи
-	os.Unsetenv("GO_" + constants.Application_Name + "_DBWLOGHOST")
-	os.Unsetenv("GO_" + constants.Application_Name + "_DBWLOGPORT")
-	os.Unsetenv("GO_" + constants.Application_Name + "_DBWLOGNAME")
-	os.Unsetenv("GO_" + constants.Application_Name + "_DBWLOGUSER")
-	os.Unsetenv("GO_" + constants.Application_Name + "_DBWLOGSTORAGENAME")
+	os.Unsetenv("GO_" + constants.App_Environment_Name + "_DBWLOGHOST")
+	os.Unsetenv("GO_" + constants.App_Environment_Name + "_DBWLOGPORT")
+	os.Unsetenv("GO_" + constants.App_Environment_Name + "_DBWLOGNAME")
+	os.Unsetenv("GO_" + constants.App_Environment_Name + "_DBWLOGUSER")
+	os.Unsetenv("GO_" + constants.App_Environment_Name + "_DBWLOGSTORAGENAME")
 
 	// Авторизационные данные
-	os.Unsetenv("GO_" + constants.Application_Name + "_TOKEN")
-	os.Unsetenv("GO_" + constants.Application_Name + "_PASSWD")
-	os.Unsetenv("GO_" + constants.Application_Name + "_DBWLOGPASSWD")
+	os.Unsetenv("GO_" + constants.App_Environment_Name + "_TOKEN")
+	os.Unsetenv("GO_" + constants.App_Environment_Name + "_PASSWD")
+	os.Unsetenv("GO_" + constants.App_Environment_Name + "_DBWLOGPASSWD")
 }
