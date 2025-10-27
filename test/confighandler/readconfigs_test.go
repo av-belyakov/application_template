@@ -38,24 +38,24 @@ func TestMain(m *testing.M) {
 
 func TestReadConfigHandler(t *testing.T) {
 	t.Run("Тест чтения конфигурационного файла", func(t *testing.T) {
-		t.Run("Тест 1. Проверка настройки Service из файла config_test.yml", func(t *testing.T) {
+		t.Run("Тест 1. Проверка аутентификационных данных", func(t *testing.T) {
+			assert.Equal(t, conf.GetAuthenticationData().SomeToken, "yoursometoken")
+			assert.Equal(t, conf.GetAuthenticationData().ServicePasswd, "yoursomepassword")
+			assert.Equal(t, conf.GetAuthenticationData().WriteLogBDPasswd, "yoursomepasswordfordatabase")
+		})
+
+		t.Run("Тест 2. Проверка настройки Service из файла config_test.yml", func(t *testing.T) {
 			assert.Equal(t, conf.GetService().Host, "localhost")
 			assert.Equal(t, conf.GetService().Port, 80)
 			assert.Equal(t, conf.GetService().User, "user-name")
 		})
 
-		t.Run("Тест 2. Проверка настройки WriteLogDataBase из файла config_dev.yml", func(t *testing.T) {
+		t.Run("Тест 3. Проверка настройки WriteLogDataBase из файла config_dev.yml", func(t *testing.T) {
 			assert.Equal(t, conf.GetLogDB().Host, "database.cloud.example")
 			assert.Equal(t, conf.GetLogDB().Port, 9200)
 			assert.Equal(t, conf.GetLogDB().User, "log_writer")
 			assert.Equal(t, conf.GetLogDB().NameDB, "")
 			assert.Equal(t, conf.GetLogDB().StorageNameDB, "application_template_db")
-		})
-
-		t.Run("Тест 0. Проверка аутентификационных данных", func(t *testing.T) {
-			assert.Equal(t, conf.GetAuthenticationData().SomeToken, "yoursometoken")
-			assert.Equal(t, conf.GetAuthenticationData().ServicePasswd, "yoursomepassword")
-			assert.Equal(t, conf.GetAuthenticationData().WriteLogBDPasswd, "yoursomepasswordfordatabase")
 		})
 	})
 
@@ -72,9 +72,9 @@ func TestReadConfigHandler(t *testing.T) {
 			conf, err := confighandler.New(constants.Root_Dir)
 			assert.NoError(t, err)
 
-			assert.Equal(t, conf.GetAuthenticationData().SomeToken, "yoursometoken")
-			assert.Equal(t, conf.GetAuthenticationData().ServicePasswd, "yoursomepassword")
-			assert.Equal(t, conf.GetAuthenticationData().WriteLogBDPasswd, "yoursomepasswordfordatabase")
+			assert.Equal(t, conf.GetAuthenticationData().SomeToken, token)
+			assert.Equal(t, conf.GetAuthenticationData().ServicePasswd, password)
+			assert.Equal(t, conf.GetAuthenticationData().WriteLogBDPasswd, passwdForDb)
 		})
 
 		t.Run("Тест 2. Проверка настройки некоторого сервиса", func(t *testing.T) {
