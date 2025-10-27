@@ -44,13 +44,13 @@ func TestReadConfigHandler(t *testing.T) {
 			assert.Equal(t, conf.GetAuthenticationData().WriteLogBDPasswd, "yoursomepasswordfordatabase")
 		})
 
-		t.Run("Тест 2. Проверка настройки Service из файла config_test.yml", func(t *testing.T) {
+		t.Run("Тест 2. Проверка настройки Service", func(t *testing.T) {
 			assert.Equal(t, conf.GetService().Host, "localhost")
 			assert.Equal(t, conf.GetService().Port, 80)
 			assert.Equal(t, conf.GetService().User, "user-name")
 		})
 
-		t.Run("Тест 3. Проверка настройки WriteLogDataBase из файла config_dev.yml", func(t *testing.T) {
+		t.Run("Тест 3. Проверка настройки WriteLogDataBase", func(t *testing.T) {
 			assert.Equal(t, conf.GetLogDB().Host, "database.cloud.example")
 			assert.Equal(t, conf.GetLogDB().Port, 9200)
 			assert.Equal(t, conf.GetLogDB().User, "log_writer")
