@@ -22,7 +22,7 @@ func New(rootDir string) (*ConfigApp, error) {
 		envList  map[string]string = map[string]string{
 			"GO_" + constants.Application_Name + "_MAIN": "",
 
-			//Подключение к некоторому сервису
+			//Подключение к некоторому сервису Service
 			"GO_" + constants.Application_Name + "_SHOST":   "",
 			"GO_" + constants.Application_Name + "_SPORT":   "",
 			"GO_" + constants.Application_Name + "_SUSER":   "",
