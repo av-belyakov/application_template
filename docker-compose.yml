@@ -1,3 +1,5 @@
+version: "3.4" #только для старых раннеров (в новых не надо)
+
 # Что бы передать переменные при запуске docker-compose.yml файда нужно
 # выполнить: 
 # APPLICATION_NAME=some_name \
@@ -8,7 +10,8 @@
 services:
   app:
     # меняем имя контейнера на имя будущего приложения
-    container_name: ${APPLICATION_NAME:-application_template}.${TYPE_EXECUTION:-prod}
+    #container_name: ${APPLICATION_NAME:-application_template}.${TYPE_EXECUTION:-prod}
+    container_name: $APPLICATION_NAME.$TYPE_EXECUTION #только для старых раннеров
     env_file:
       .env
     environment:
@@ -16,15 +19,20 @@ services:
       GO_APPLICATIONTEMPLATE_PASSWD: $GO_APPLICATIONTEMPLATE_PASSWD
       GO_APPLICATIONTEMPLATE_TOKEN: $GO_APPLICATIONTEMPLATE_TOKEN
     # меняем путь к образу на путь к образу будущего приложения
-    image: gitlab.cloud.gcm:5050/a.belyakov/${APPLICATION_NAME:-application_template}:${TYPE_IMAGE:-latest}
+    #image: gitlab.cloud.gcm:5050/a.belyakov/${APPLICATION_NAME:-application_template}:${TYPE_IMAGE:-latest}
+    image: gitlab.cloud.gcm:5050/a.belyakov/$APPLICATION_NAME:$TYPE_IMAGE #только для старых раннеров
     restart: unless-stopped
     # пробрасываем user ID для корректной записи в логов
     user: root
-    command: chmod 777 /opt/${APPLICATION_NAME:-application_template}/logs && \
-             chown 1500:1500 /opt/${APPLICATION_NAME:-application_template}/logs
+    #command: chmod 777 /opt/${APPLICATION_NAME:-application_template}/logs && \
+    #         chown 1500:1500 /opt/${APPLICATION_NAME:-application_template}/logs 
+    command: chmod 777 /opt/$APPLICATION_NAME/logs && \
+             chown 1500:1500 /opt/$APPLICATION_NAME/logs 
     volumes:
-      - /var/log/${APPLICATION_NAME:-application_template}.${TYPE_EXECUTION:-prod}:/opt/${APPLICATION_NAME:-application_template}/logs:rw
-      - ./config:/opt/${APPLICATION_NAME:-application_template}/config:rw
+      #- /var/log/${APPLICATION_NAME:-application_template}.${TYPE_EXECUTION:-prod}:/opt/${APPLICATION_NAME:-application_template}/logs:rw
+      #- ./config:/opt/${APPLICATION_NAME:-application_template}/config:rw
+      - /var/log/$APPLICATION_NAME.$TYPE_EXECUTION:/opt/$APPLICATION_NAME/logs:rw
+      - ./config:/opt/$APPLICATION_NAME/config:rw
       # выполняем для корректного отображения даты с учетом временной зоны
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
