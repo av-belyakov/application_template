@@ -150,7 +150,11 @@ deploy-test:
     - echo "Start deploy $APPLICATION_NAME application for GCM.test"
   script:
     - *docker-login
-    - docker-compose -f $CI_PROJECT_DIR/docker-compose.test.yml down
+    - >
+      APPLICATION_NAME=$APPLICATION_NAME \
+      TYPE_EXECUTION=test \
+      TYPE_IMAGE=test \
+      docker-compose -f $CI_PROJECT_DIR/docker-compose.yml down
     - docker rmi gitlab.cloud.gcm:5050/a.belyakov/enricher_sensor_information:test || true
     - >
       APPLICATION_NAME=$APPLICATION_NAME \
@@ -177,7 +181,11 @@ deploy-prod-gcm:
     - echo "Start deploy $APPLICATION_NAME application for GCM"
   script:
     - *docker-login
-    - docker-compose -f $CI_PROJECT_DIR/docker-compose.yml down
+    - >
+      APPLICATION_NAME=$APPLICATION_NAME \
+      TYPE_EXECUTION=prod \
+      TYPE_IMAGE=latest \ 
+      docker-compose -f $CI_PROJECT_DIR/docker-compose.yml down
     - docker rmi gitlab.cloud.gcm:5050/a.belyakov/enricher_sensor_information:latest || true
     - >
       APPLICATION_NAME=$APPLICATION_NAME \
