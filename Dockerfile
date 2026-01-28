@@ -41,14 +41,15 @@ ARG APPLICATION_NAME=application_template
 # работать приложение, во всех остальных случаях режим работы prod
 ARG STATUS=prod
 ARG USER_NAME=dockeruser
+ARG USER_DIR=/opt/${APPLICATION_NAME}
 ARG LOGS_DIR=logs
 ARG VERSION=0.1.1
 #!!! здесь заменить переменную окружения на соответствующую имени приложения !!!
 ENV GO_APPLICATION_TEMPLATE_MAIN=${STATUS}
-WORKDIR /opt/${APPLICATION_NAME}
 RUN addgroup --g 1500 groupcontainer && \
-    adduser -u 1500 -G groupcontainer -D ${USERNAME} --home ${WORK_DIR}
+    adduser -u 1500 -G groupcontainer -D ${USER_NAME} --home ${USER_DIR}
 USER ${USER_NAME}
+WORKDIR ${USER_DIR}
 RUN mkdir ./${LOGS_DIR}
 COPY --from=build_image /go/src/${VERSION}/app ./
 COPY --from=build_image /go/src/${VERSION}/README.md ./

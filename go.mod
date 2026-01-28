@@ -1,6 +1,6 @@
 module github.com/av-belyakov/application_template
 
-go 1.25.3
+go 1.25.6
 
 require (
 	github.com/av-belyakov/simplelogger v0.0.0-20250924090323-6ab0607b4a4b

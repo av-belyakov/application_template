@@ -1,10 +1,10 @@
 version: "3.4" #только для старых раннеров (в новых не надо)
 
-# Что бы передать переменные при запуске docker-compose.yml файда нужно
-# выполнить: 
+# Что бы передать переменные при запуске docker-compose.yml нужно
+# выполнить:
 # APPLICATION_NAME=some_name \
 # TYPE_IMAGE=latest \
-# TYPE_EXECUTION=some_type_exec \ 
+# TYPE_EXECUTION=some_type_exec \
 # docker-compose -f docker-compose.yml up -d
 
 services:
@@ -12,8 +12,7 @@ services:
     # меняем имя контейнера на имя будущего приложения
     #container_name: ${APPLICATION_NAME:-application_template}.${TYPE_EXECUTION:-prod}
     container_name: $APPLICATION_NAME.$TYPE_EXECUTION #только для старых раннеров
-    env_file:
-      .env
+    env_file: .env
     environment:
       GO_APPLICATIONTEMPLATE_DBWLOGPASSWD: $GO_APPLICATIONTEMPLATE_DBWLOGPASSWD
       GO_APPLICATIONTEMPLATE_PASSWD: $GO_APPLICATIONTEMPLATE_PASSWD
@@ -25,9 +24,9 @@ services:
     # пробрасываем user ID для корректной записи в логов
     user: root
     #command: chmod 777 /opt/${APPLICATION_NAME:-application_template}/logs && \
-    #         chown 1500:1500 /opt/${APPLICATION_NAME:-application_template}/logs 
+    #         chown 1500:1500 /opt/${APPLICATION_NAME:-application_template}/logs
     command: chmod 777 /opt/$APPLICATION_NAME/logs && \
-             chown 1500:1500 /opt/$APPLICATION_NAME/logs 
+      chown 1500:1500 /opt/$APPLICATION_NAME/logs
     volumes:
       #- /var/log/${APPLICATION_NAME:-application_template}.${TYPE_EXECUTION:-prod}:/opt/${APPLICATION_NAME:-application_template}/logs:rw
       #- ./config:/opt/${APPLICATION_NAME:-application_template}/config:rw
@@ -47,8 +46,8 @@ services:
 #    container_name: major-database
 #    restart: unless-stopped
 #    command: >
-#      здесь 
-#      перечень 
+#      здесь
+#      перечень
 #      выполняемых команд
 #    networks:
 #      - app-network

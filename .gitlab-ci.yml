@@ -1,6 +1,7 @@
 variables:
   BRANCH_TEST: development
   BRANCH_MAJOR: master
+  # заменить содержимое APPLICATION_NAME на наименование приложения
   APPLICATION_NAME: application_template
   RUNNER_TAG_BUILD: $APPLICATION_NAME.build
   RUNNER_TAG_DEPLOY_TEST: $APPLICATION_NAME.deploy-test
