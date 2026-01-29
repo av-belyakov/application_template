@@ -1,7 +1,11 @@
-ZabbiService:
-  host: localhost.prod
-  port: 888
-  user: user-name.prod
+WebServer:
+  isActive: true
+  host: localhost
+  port: 8484
+Service:
+  host: localhost.dev
+  port: 88
+  user: user-name.dev
 WriteLogDataBase:
   host: database.cloud.example.prod
   port: 9200

@@ -12,7 +12,7 @@ services:
     # меняем имя контейнера на имя будущего приложения
     #container_name: ${APPLICATION_NAME:-application_template}.${TYPE_EXECUTION:-prod}
     container_name: $APPLICATION_NAME.$TYPE_EXECUTION #только для старых раннеров
-    env_file: .env
+    env_file: .env # если нужны значения из файла .env
     environment:
       GO_APPLICATIONTEMPLATE_DBWLOGPASSWD: $GO_APPLICATIONTEMPLATE_DBWLOGPASSWD
       GO_APPLICATIONTEMPLATE_PASSWD: $GO_APPLICATIONTEMPLATE_PASSWD

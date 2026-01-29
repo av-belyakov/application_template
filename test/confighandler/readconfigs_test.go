@@ -44,13 +44,19 @@ func TestReadConfigHandler(t *testing.T) {
 			assert.Equal(t, conf.GetAuthenticationData().WriteLogBDPasswd, "yoursomepasswordfordatabase")
 		})
 
-		t.Run("Тест 2. Проверка настройки Service", func(t *testing.T) {
+		t.Run("Тест 2. Проверка настройки Web-сервера", func(t *testing.T) {
+			assert.Equal(t, conf.GetWebServer().Host, "localhost")
+			assert.Equal(t, conf.GetWebServer().Port, 8484)
+			assert.Equal(t, conf.GetWebServer().IsActive, true)
+		})
+
+		t.Run("Тест 3. Проверка настройки Service", func(t *testing.T) {
 			assert.Equal(t, conf.GetService().Host, "localhost")
 			assert.Equal(t, conf.GetService().Port, 80)
 			assert.Equal(t, conf.GetService().User, "user-name")
 		})
 
-		t.Run("Тест 3. Проверка настройки WriteLogDataBase", func(t *testing.T) {
+		t.Run("Тест 4. Проверка настройки WriteLogDataBase", func(t *testing.T) {
 			assert.Equal(t, conf.GetLogDB().Host, "database.cloud.example")
 			assert.Equal(t, conf.GetLogDB().Port, 9200)
 			assert.Equal(t, conf.GetLogDB().User, "log_writer")
@@ -77,7 +83,18 @@ func TestReadConfigHandler(t *testing.T) {
 			assert.Equal(t, conf.GetAuthenticationData().WriteLogBDPasswd, passwdForDb)
 		})
 
-		t.Run("Тест 2. Проверка настройки некоторого сервиса", func(t *testing.T) {
+		t.Run("Тест 2. Проверка настройки Web-сервера", func(t *testing.T) {
+			os.Setenv("GO_"+constants.App_Environment_Name+"_WEBHOST", "127.0.0.1")
+			os.Setenv("GO_"+constants.App_Environment_Name+"_WEBPORT", "4242")
+
+			conf, err := confighandler.New(constants.Root_Dir)
+			assert.NoError(t, err)
+
+			assert.Equal(t, conf.GetWebServer().Host, "127.0.0.1")
+			assert.Equal(t, conf.GetWebServer().Port, 4242)
+		})
+
+		t.Run("Тест 3. Проверка настройки некоторого сервиса", func(t *testing.T) {
 			os.Setenv("GO_"+constants.App_Environment_Name+"_SHOST", "127.0.0.1")
 			os.Setenv("GO_"+constants.App_Environment_Name+"_SPORT", "4242")
 			os.Setenv("GO_"+constants.App_Environment_Name+"_SUSER", "some_user_service")
@@ -90,7 +107,7 @@ func TestReadConfigHandler(t *testing.T) {
 			assert.Equal(t, conf.GetService().User, "some_user_service")
 		})
 
-		t.Run("Тест 3. Проверка настройки WriteLogDataBase", func(t *testing.T) {
+		t.Run("Тест 4. Проверка настройки WriteLogDataBase", func(t *testing.T) {
 			os.Setenv("GO_"+constants.App_Environment_Name+"_DBWLOGHOST", "domaniname.database.cm")
 			os.Setenv("GO_"+constants.App_Environment_Name+"_DBWLOGPORT", "8989")
 			os.Setenv("GO_"+constants.App_Environment_Name+"_DBWLOGUSER", "somebody_user")

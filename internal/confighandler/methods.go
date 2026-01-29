@@ -17,6 +17,11 @@ func (c *ConfigApp) GetListLogs() []*LogSet {
 	return c.Common.Logs
 }
 
+// GetWebServer настройки веб сервера
+func (c *ConfigApp) GetWebServer() *CfgWebServer {
+	return &c.WebServer
+}
+
 // GetService настройки взаимодействия с некоторым сервисом
 func (c *ConfigApp) GetService() *CfgService {
 	return &c.Service

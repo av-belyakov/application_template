@@ -1,0 +1,69 @@
+package appstorage
+
+import (
+	"net/netip"
+	"sync"
+	"sync/atomic"
+	"time"
+)
+
+// SharedAppStorage общее хранилище приложения
+type SharedAppStorage struct {
+	statistics    StatisticsApp
+	logs          LogsApp
+	configuration AppShortConfiguration
+}
+
+type Options func(*SharedAppStorage) error
+
+// Statistics статистическая информация приложения
+type StatisticsApp struct {
+	mutex              sync.RWMutex
+	data               []HostDetailedInformation
+	startDateExecution time.Time
+	endDateExecution   time.Time
+	countAnyValues     atomic.Int32 // некоторое количество
+	isExecution        atomic.Bool
+}
+
+// HostDetailedInformation детальная информация о хосте
+type HostDetailedInformation struct {
+	Ips           []netip.Addr `json:"ips"`             // список ip адресов
+	SensorsId     []string     `json:"sensor_id"`       // id обслуживающего сенсора
+	NetboxHostsId []int        `json:"netbox_hosts_id"` // id хоста в netbox
+	OriginalHost  string       `json:"original_host"`   // исходное наименование хоста
+	DomainName    string       `json:"domain_name"`     // доменное имя
+	Error         error        `json:"error"`           // ошибка
+	HostId        int          `json:"host_id"`         // id хоста
+	IsActive      bool         `json:"is_active"`       // флаг активный ли хост
+	IsProcessed   bool         `json:"is_processed"`    // флаг обработан ли хост
+}
+
+// LogsApp логи приложения
+type LogsApp struct {
+	mutex sync.RWMutex
+	story []LogInformation
+	size  int // ограничение на размер хранилища
+}
+
+// LogInformation информация по логам
+type LogInformation struct {
+	Date        string `json:"timestamp"`
+	Type        string `json:"level"`
+	Description string `json:"message"`
+}
+
+// AppShortConfiguration краткая конфигурация приложения
+type AppShortConfiguration struct {
+	taskSchedulerDailyJobs []string
+	netbox                 ShortParameters
+	zabbix                 ShortParameters
+	databaseLogging        ShortParameters
+	taskSchedulerTimerJob  int
+}
+
+type ShortParameters struct {
+	User string
+	Host string
+	Port int
+}

@@ -1,6 +1,22 @@
 # **Application_template**... (здесь новое наименование приложения)
 
+[![Go Version](https://img.shields.io/badge/Go-1.25.6+-00ADD8?style=flat&logo=go)](https://golang.org/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat&logo=docker)](https://www.docker.com/)
+
 Сервис '**Application_template**' выполняет...
+
+## Подробное описание работы сервиса
+
+После старта, сервис '**Application_template**' разворачивает простой http сервер по адресу и порту взятым из полей **InformationServerApi.host** и **InformationServerApi.port**. В нём можно посмотреть статистику и логи сервиса.
+HTTP сервер можно отключить в конфигурационном файле _config/config_test.yml_ в **WebServer.isActive**.
+
+Для работы с frontend используется шаблонизатор **Templ**, информация по установке и работе с ним доступна здесь https://templ.guide/quick-start/installation. После того как templ будет установлен и настроен как \_go tool\* необходимо выполнять команду
+
+```bash
+go tool templ generate
+```
+
+для сборки новых шаблонов.
 
 ## Конфигурационные настройки
 
@@ -18,6 +34,11 @@
 #### Переменная окружения отвечающая за тип запуска приложения "development", "test" или "production"
 
 - 'GO\_**APPLICATIONTEMPLATE**\_MAIN'
+
+#### Переменные окружения отвечающие за настройки Web сервера
+
+- 'GO\_**APPLICATIONTEMPLATE**\_WEBHOST' - доменное имя или ip
+- 'GO\_**APPLICATIONTEMPLATE**\_WEBPORT' - сетевой порт
 
 #### Переменные окружения отвечающие за...
 

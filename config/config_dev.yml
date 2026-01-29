@@ -1,3 +1,7 @@
+WebServer:
+  isActive: true
+  host: localhost
+  port: 8484
 Service:
   host: localhost.dev
   port: 88

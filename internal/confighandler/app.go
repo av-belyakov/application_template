@@ -28,6 +28,10 @@ func New(rootDir string) (*ConfigApp, error) {
 			"GO_" + constants.App_Environment_Name + "_PASSWD":       "",
 			"GO_" + constants.App_Environment_Name + "_DBWLOGPASSWD": "",
 
+			// Настройки Web-сервера
+			"GO_" + constants.App_Environment_Name + "_WEBHOST": "",
+			"GO_" + constants.App_Environment_Name + "_WEBPORT": "",
+
 			// Подключение к некоторому сервису Service
 			"GO_" + constants.App_Environment_Name + "_SHOST": "",
 			"GO_" + constants.App_Environment_Name + "_SPORT": "",
@@ -76,6 +80,17 @@ func New(rootDir string) (*ConfigApp, error) {
 		viper.SetConfigType("yml")
 		if err := viper.ReadInConfig(); err != nil {
 			return err
+		}
+
+		// Настройки Web-сервера
+		if viper.IsSet("WebServer.host") {
+			conf.WebServer.Host = viper.GetString("WebServer.host")
+		}
+		if viper.IsSet("WebServer.port") {
+			conf.WebServer.Port = viper.GetInt("WebServer.port")
+		}
+		if viper.IsSet("WebServer.isActive") {
+			conf.WebServer.IsActive = viper.GetBool("WebServer.isActive")
 		}
 
 		// Настройки для модуля подключения к некоторому сервису
@@ -173,6 +188,16 @@ func New(rootDir string) (*ConfigApp, error) {
 	}
 	if envList["GO_"+constants.App_Environment_Name+"_DBWLOGPASSWD"] != "" {
 		conf.AuthenticationData.WriteLogBDPasswd = envList["GO_"+constants.App_Environment_Name+"_DBWLOGPASSWD"]
+	}
+
+	// Настройки Web-сервера
+	if envList["GO_"+constants.App_Environment_Name+"_WEBHOST"] != "" {
+		conf.WebServer.Host = envList["GO_"+constants.App_Environment_Name+"_WEBHOST"]
+	}
+	if envList["GO_"+constants.App_Environment_Name+"_WEBPORT"] != "" {
+		if p, err := strconv.Atoi(envList["GO_"+constants.App_Environment_Name+"_WEBPORT"]); err == nil {
+			conf.WebServer.Port = p
+		}
 	}
 
 	// Настройки для модуля подключения к некоторому сервису Service

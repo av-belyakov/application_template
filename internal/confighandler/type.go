@@ -5,6 +5,7 @@ type ConfigApp struct {
 	Common             CfgCommon
 	LogDB              CfgWriteLogDB
 	Service            CfgService
+	WebServer          CfgWebServer
 	AuthenticationData CfgAuthenticationData
 }
 
@@ -41,6 +42,13 @@ type CfgService struct {
 	Host string `validate:"required" yaml:"host"`
 	User string `validate:"required" yaml:"user"`
 	Port int    `validate:"gt=0,lte=65535" yaml:"port"`
+}
+
+// CfgWebServer настройки веб сервера
+type CfgWebServer struct {
+	Host     string `validate:"required" yaml:"host"`
+	Port     int    `validate:"gt=0,lte=65535" yaml:"port"`
+	IsActive bool   `yaml:"isActive"`
 }
 
 type CfgAuthenticationData struct {

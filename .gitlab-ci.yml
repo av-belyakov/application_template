@@ -3,9 +3,6 @@ variables:
   BRANCH_MAJOR: master
   # заменить содержимое APPLICATION_NAME на наименование приложения
   APPLICATION_NAME: application_template
-  RUNNER_TAG_BUILD: $APPLICATION_NAME.build
-  RUNNER_TAG_DEPLOY_TEST: $APPLICATION_NAME.deploy-test
-  RUNNER_TAG_DEPLOY_PROD: $APPLICATION_NAME.deploy-prod
   LABEL_FOR_IMAGE: temporary
 
 stages:
@@ -15,17 +12,17 @@ stages:
 # сборка образа (ВМ с runner-ом ответственым за сборку образа)
 .build-runner-tags: &build-tags
   tags:
-    - $RUNNER_TAG_BUILD
+    - $APPLICATION_NAME.build
 
 # разворачивание тестовой сборки (ВМ с runner-ом ответственым за развёртывание тестового образа)
 .deploy-test-runner-tags: &deploy-test-tags
   tags:
-    - $RUNNER_TAG_DEPLOY_TEST
+    - $APPLICATION_NAME.deploy-test
 
 # разворачивание продуктовой сборки (ВМ с runner-ом ответственым за развёртывание продуктового образа)
 .deploy-prod-runner-tags: &deploy-prod-tags
   tags:
-    - RUNNER_TAG_DEPLOY_PROD
+    - $APPLICATION_NAME.deploy-prod
 
 # авторизация для docker
 .docker-login-script: &docker-login
@@ -99,6 +96,7 @@ build-test:
        --build-arg VERSION=$CI_COMMIT_SHORT_SHA \
        --build-arg USERNAME=$GITLAB_USER_NAME \
        --build-arg USERPASSWD=$GITLAB_USER_PASSWD \
+       --build-arg APPLICATION_NAME=$APPLICATION_NAME \
        --build-arg BRANCH=$BRANCH_TEST \
        --build-arg STATUS=development .
     # удаление промежуточного образа с меткой temporary
@@ -125,6 +123,7 @@ build-prod:
        --build-arg VERSION=$CI_COMMIT_SHORT_SHA \
        --build-arg USERNAME=$GITLAB_USER_NAME \
        --build-arg USERPASSWD=$GITLAB_USER_PASSWD \
+       --build-arg APPLICATION_NAME=$APPLICATION_NAME \
        --build-arg BRANCH=$BRANCH_MAJOR .
     - *docker-image-pure
     - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:latest
@@ -151,19 +150,15 @@ deploy-test:
     - echo "Start deploy $APPLICATION_NAME application for GCM.test"
   script:
     - *docker-login
+    - docker-compose -f $CI_PROJECT_DIR/docker-compose.yml down
+    - docker rmi $CI_REGISTRY_IMAGE:test || true
     - >
-      APPLICATION_NAME=$APPLICATION_NAME \
-      TYPE_EXECUTION=test \
-      TYPE_IMAGE=test \
-      docker-compose -f $CI_PROJECT_DIR/docker-compose.yml down
-    - docker rmi gitlab.cloud.gcm:5050/a.belyakov/enricher_sensor_information:test || true
-    - >
-      APPLICATION_NAME=$APPLICATION_NAME \
-      TYPE_EXECUTION=test \
-      TYPE_IMAGE=test \
+      APPLICATION_NAME=$APPLICATION_NAME
+      TYPE_EXECUTION=test
+      TYPE_IMAGE=test
       docker-compose -f $CI_PROJECT_DIR/docker-compose.yml up -d --force-recreate --build
 
-#развёртывание основной сборки (GCM)
+# развёртывание основной сборки (GCM)
 deploy-prod-gcm:
   stage: deploy
   <<: *deploy-prod-tags
@@ -182,14 +177,10 @@ deploy-prod-gcm:
     - echo "Start deploy $APPLICATION_NAME application for GCM"
   script:
     - *docker-login
+    - docker-compose -f $CI_PROJECT_DIR/docker-compose.yml down
+    - docker rmi $CI_REGISTRY_IMAGE:latest || true
     - >
-      APPLICATION_NAME=$APPLICATION_NAME \
-      TYPE_EXECUTION=prod \
-      TYPE_IMAGE=latest \ 
-      docker-compose -f $CI_PROJECT_DIR/docker-compose.yml down
-    - docker rmi gitlab.cloud.gcm:5050/a.belyakov/enricher_sensor_information:latest || true
-    - >
-      APPLICATION_NAME=$APPLICATION_NAME \
-      TYPE_EXECUTION=prod \
-      TYPE_IMAGE=latest \
+      APPLICATION_NAME=$APPLICATION_NAME
+      TYPE_EXECUTION=prod
+      TYPE_IMAGE=latest
       docker-compose -f $CI_PROJECT_DIR/docker-compose.yml up -d --force-recreate --build
