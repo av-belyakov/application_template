@@ -3,43 +3,42 @@ package components
 import "github.com/av-belyakov/application_template/datamodels"
 
 templ TemplateBasePage(tbp datamodels.TemplBasePage, component templ.Component, scripts templ.ComponentScript) {
-<!DOCTYPE html>
-<html lang="ru">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{tbp.Title}</title>
-    <link rel="stylesheet" href="/static/styles.css">
-</head>
-
-<body>
-    <div class="container">
-        <header>
-            <h2>{tbp.AppName}</h2>
-        </header>
-        <div class="menu-container">
-            <nav>@menuLinks(tbp.MenuLinks)</nav>
-        </div>
-        <div class="content">
-            <div>@component</div>
-            @scripts
-        </div>
-    </div>
-</body>
-<footer>
-    <p>{tbp.AppName} {tbp.AppVersion}, 2025</p>
-</footer>
-
-</html>
+	<!DOCTYPE html>
+	<html lang="ru">
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>{ tbp.Title }</title>
+			<link rel="stylesheet" href="/static/styles.css"/>
+		</head>
+		<body>
+			<div class="container">
+				<header>
+					<h2>{ tbp.AppName }</h2>
+				</header>
+				<div class="menu-container">
+					<nav>@menuLinks(tbp.MenuLinks)
+</nav>
+				</div>
+				<div class="content">
+					<div>@component
+</div>
+					@scripts
+				</div>
+			</div>
+		</body>
+		<footer>
+			<p>{ tbp.AppName } { tbp.AppVersion }, 2025</p>
+		</footer>
+	</html>
 }
 
-templ menuLinks(links []struct{Name, Link, Icon string}){
-<ul class="menu">
-    for _, v := range links {
-    <li class="active">
-        <a href={v.Link} class="active">{v.Name}</a>
-    </li>
-    }
-</ul>
+templ menuLinks(links []struct{ Name, Link, Icon string }) {
+	<ul class="menu">
+		for _, v := range links {
+			<li class="active">
+				<a href={ v.Link } class="active">{ v.Name }</a>
+			</li>
+		}
+	</ul>
 }
