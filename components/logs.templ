@@ -1,63 +1,61 @@
 package components
 
 import (
-"fmt"
-"strings"
+	"fmt"
+	"strings"
 
-"github.com/av-belyakov/enricher_zabbix_information/internal/appstorage"
+	"github.com/av-belyakov/application_template/internal/appstorage"
 )
 
 templ TemplateLogs(logs []appstorage.LogInformation, logMaxSize int) {
-<p>Логи приложения. Вывод последних {logMaxSize} записей.</p>
+	<p>Логи приложения. Вывод последних { logMaxSize } записей.</p>
+	{{
+		if len(logs) == 0 {
+			return
+		}
 
-{{
-if len(logs) == 0 {
-return
-}
-
-logStats := GetLogStats(logs)
-}}
-
-<div id="areaLogs">
-    <div name="log_stats">
-        <hr>
-        <div style="color: #666; font-size: 0.9em;">
-            Всего событий: {len(logs)}
-            INFO: {logStats["INFO"]}
-            WARNING: {logStats["WARNING"]}
-            ERROR: {logStats["ERROR"]}
-            DEBUG: {logStats["DEBUG"]}
-        </div>
-    </div>
-    <div name="log_list">
-        for _, v := range logs {
-        {{
-        logItem := fmt.Sprintf("log-%s", strings.ToLower(v.Type))
-        logLevel := fmt.Sprintf("log-level-%s", strings.ToLower(v.Type))
-        }}
-        <div class={"log-item", logItem}>
-            <div>
-                <span class="log-timestamp">{v.Date}</span>
-                <span class={"log-level", logLevel}>{v.Type}</span>
-                <span class="log-message">{v.Description}</span>
-            </div>
-        </div>
-        }
-    </div>
-</div>
+		logStats := GetLogStats(logs)
+	}}
+	<div id="areaLogs">
+		<div name="log_stats">
+			<hr/>
+			<div style="color: #666; font-size: 0.9em;">
+				Всего событий: { len(logs) }
+				INFO: { logStats["INFO"] }
+				WARNING: { logStats["WARNING"] }
+				ERROR: { logStats["ERROR"] }
+				DEBUG: { logStats["DEBUG"] }
+			</div>
+		</div>
+		<div name="log_list">
+			for _, v := range logs {
+				{{
+					logItem := fmt.Sprintf("log-%s", strings.ToLower(v.Type))
+					logLevel := fmt.Sprintf("log-level-%s", strings.ToLower(v.Type))
+				}}
+				<div class={ "log-item" , logItem }>
+					<div>
+						<span class="log-timestamp">{ v.Date }</span>
+						<span class={ "log-level" , logLevel }>{ v.Type }</span>
+						<span class="log-message">{ v.Description }</span>
+					</div>
+				</div>
+			}
+		</div>
+	</div>
 }
 
 func GetLogStats(logs []appstorage.LogInformation) map[string]int {
-logStats := map[string]int{
-"INFO": 0,
-"WARNING": 0,
-"ERROR": 0,
-"DEBUG": 0,
-}
+	logStats := map[string]int{
+		"INFO":    0,
+		"WARNING": 0,
+		"ERROR":   0,
+		"DEBUG":   0,
+	}
 
-for _, v := range logs {
-logStats[v.Type] += 1
-}
+	for _, v := range logs {
+		logStats[v.Type] += 1
+	}
 
-return logStats
+	return logStats
 }

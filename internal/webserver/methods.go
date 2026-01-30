@@ -13,8 +13,11 @@ import (
 	"github.com/a-h/templ"
 	"golang.org/x/sync/errgroup"
 
+	"github.com/av-belyakov/application_template/components"
 	"github.com/av-belyakov/application_template/constants"
+	"github.com/av-belyakov/application_template/datamodels"
 	"github.com/av-belyakov/application_template/internal/appname"
+	"github.com/av-belyakov/application_template/internal/websocketserver"
 )
 
 func init() {
@@ -30,11 +33,9 @@ func init() {
 func (is *InformationServer) Start(ctx context.Context) error {
 	wsServer := websocketserver.New()
 	routers := map[string]func(http.ResponseWriter, *http.Request){
-		"/":                       is.RouteIndex,
-		"/task_information":       is.RouteTaskInformation,
-		"/memory_statistics":      is.RouteMemoryStatistics,
-		"/manually_task_starting": is.RouteManuallyTaskStarting,
-		"/logs":                   is.RouteLogs,
+		"/":                  is.RouteIndex,
+		"/memory_statistics": is.RouteMemoryStatistics,
+		"/logs":              is.RouteLogs,
 		"/ws": func(w http.ResponseWriter, r *http.Request) {
 			websocketserver.ServeWs(is.logger, wsServer, w, r)
 		},

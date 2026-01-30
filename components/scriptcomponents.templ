@@ -1,0 +1,249 @@
+package components
+
+script BaseComponentScripts() {
+    const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = `${wsProtocol}//${window.location.host}/ws`;
+    let arrLogs = [];
+    let socket = new WebSocket(wsUrl);
+
+    function wsConnect(){
+        socket.onopen = function() {
+            console.log('WebSocket соединение установлено');
+            //updateStatus(true);
+            //addMessage('Подключено к серверу', 'server');
+        };
+
+        socket.onmessage = function(event) {
+            //console.log('Получено сообщение:', event.data);
+
+            processingMessage(event.data);
+            //addMessage(`Сервер: ${event.data}`, 'server');
+        };
+
+        socket.onclose = function(event) {
+            console.log('WebSocket соединение закрыто');
+            //updateStatus(false);
+            //addMessage('Соединение закрыто', 'server');
+        };
+
+        socket.onerror = function(error) {
+            console.error('WebSocket ошибка:', error);
+            //addMessage('Произошла ошибка соединения', 'server');
+        };
+    }
+    
+    function wsDisconnect() {
+        if (socket) {
+            socket.close();
+            socket = null;
+        }
+    }
+
+    function processingMessage(data){
+        let jsonObj = JSON.parse(data)
+
+        console.log("received data:", jsonObj.data)
+
+        if (jsonObj.type == "logs") {
+            displayLogs(jsonObj.data);
+        }
+
+        //управление передачей токена для запуска выполнения задачи
+        if (jsonObj.type == "manually_task") {            
+            if (jsonObj.settings.error != "") {
+                printErrorMessage(true);
+                disabledInputAndButtonSendToken(false);                
+
+                return
+            } 
+            
+            //показ области для для вывода информации о выполнении процесса
+            let idInformationArea = document.getElementById("informationArea");
+            if (idInformationArea != null) {
+                idInformationArea.hidden = false;
+            }
+
+            printErrorMessage(false);
+
+            //делать доступными для взаимодействия кнопку и поле ввода
+            //только после выполнения задачи
+        }
+
+        //вывод хода выполнения задачи  
+        if (jsonObj.type == "ask_manually_task") {
+            //разблокируем кнопку отправить и поле ввода токена
+            if(jsonObj.data.execution_status == "завершена") {
+                disabledInputAndButtonSendToken(false);
+            }
+
+            let infoField = document.getElementById("informationArea");
+            if (infoField == null){
+                return
+            }
+
+            infoField.innerHTML = `
+                <div>
+                    <p>Статистика выполнения задачи:</p>		
+                    <div>Статус задачи: <u>${jsonObj.data.execution_status}</u></div>
+                    <div>Время начала выполнения: ${jsonObj.data.data_start}</div>
+                    <div>Время завершения выполнения: ${jsonObj.data.data_end}</div>
+                    <div>Время на выполнение задачи: ${jsonObj.data.diff_time}</div>
+		            <div>Общее количество групп хостов в Zabbix: ${jsonObj.data.count_zabbix_hosts_group}</div>
+		            <div>Группы хостов по которым осуществляется мониторинг: ${jsonObj.data.count_monitoring_hosts_group}</div>
+		            <div>Хосты по которым осуществляется мониторинг: ${jsonObj.data.count_monitoring_hosts}</div>
+		            <div>Количество ip адресов совпавших с префиксами Netbox: ${jsonObj.data.count_found_ip_to_prefix}</div>
+		            <div>Всего в Netbox найдено префиксов: ${jsonObj.data.count_netbox_prefixes}</div>
+		            <div>Получено из Netbox префиксов: ${jsonObj.data.count_netbox_prefixes_received}</div>
+                    <div>Обновленные хосты в Zabbix: ${jsonObj.data.count_updated_zabbix_hosts}</div>
+		            <div>Хосты обработанные с ошибкой: ${jsonObj.data.count_hosts_error}</div>
+                    <div>Список доменных имён при обработки которых возникли ошибки:</div>
+                    <div style="padding-left: 20px; margin: 10px 0;">
+                        <ol id="listDomainName"></ol>
+                    </div>
+                </div>
+            `
+
+            let listDomainName = document.getElementById("listDomainName");     
+            jsonObj.data.hosts.forEach(host => {
+                let elemLi = document.createElement("li");
+                elemLi.innerHTML = `<b>${host.name}</b>, error: ${host.error}`; 
+                listDomainName.appendChild(elemLi);
+            });
+        }
+    }
+
+    // форматирования времени
+    function formatTimestamp(timestamp) {
+        const date = new Date(timestamp);
+        
+        return date.toLocaleString('ru-RU');
+    }
+
+    // CSS класс по уровню логирования
+    function getLogLevelClass(level) {
+        const levelMap = {
+            'INFO': 'log-info',
+            'WARNING': 'log-warning',
+            'ERROR': 'log-error',
+            'DEBUG': 'log-info'
+        };
+
+        return levelMap[level] || 'log-info';
+    }
+
+    // CSS класс для уровня
+    function getLevelColorClass(level) {
+        return `log-level-${level.toLowerCase()}`;
+    }
+
+    // статистика по логам
+    function getLogStats(logs) {
+        return {
+            total: logs.length,
+            info: logs.filter(log => log.level === 'INFO').length,
+            warning: logs.filter(log => log.level === 'WARNING').length,
+            error: logs.filter(log => log.level === 'ERROR').length,
+            debug: logs.filter(log => log.level === 'DEBUG').length
+        };
+    }
+
+    // Отображение логов
+    function displayLogs(logs) {
+        const logsContainer = document.getElementById('areaLogs');
+        if (logsContainer == null){
+            return
+        }
+    
+        // Очищаем контейнер
+        logsContainer.innerHTML = '';
+    
+        // Создаем список логов
+        const logsList = document.createElement('div');
+    
+        logs.forEach(log => {
+            const logItem = document.createElement('div');
+            logItem.className = `log-item ${getLogLevelClass(log.level)}`;
+        
+            // Создаем HTML для элемента лога
+            logItem.innerHTML = `
+                <div>
+                    <span class="log-timestamp">${log.timestamp}</span>
+                    <span class="log-level ${getLevelColorClass(log.level)}">${log.level}</span>
+                    <span class="log-message">${log.message}</span>
+                </div>
+                ${log.details ? `<div class="log-details"><small>${log.details}</small></div>` : ''}
+                ${log.user ? `<div class="log-user"><small>Пользователь: ${log.user}</small></div>` : ''}
+            `;
+        
+            logsList.appendChild(logItem);
+        });
+    
+        // Добавляем статистику
+        const stats = getLogStats(logs);
+        const statsElement = document.createElement('div');
+        statsElement.innerHTML = `
+            <hr>
+            <div style="color: #666; font-size: 0.9em;">
+                Всего событий: ${stats.total} | 
+                INFO: ${stats.info} | 
+                WARNING: ${stats.warning} | 
+                ERROR: ${stats.error} | 
+                DEBUG: ${stats.debug}
+            </div>
+        `;
+    
+        logsContainer.appendChild(statsElement);
+        logsContainer.appendChild(logsList);
+    }
+    
+    function sendToken(){
+        let tokenElement = document.getElementById("inputToken");
+        let jsonData = JSON.stringify({
+            "type": "manually_task",
+            "settings": {
+                "token": tokenElement.value
+            }
+        });
+
+        printErrorMessage(false);
+        socket.send(jsonData)
+
+        //временно выключаем поле ввода токена и кнопку его отправки
+        disabledInputAndButtonSendToken(true);
+    }
+
+    function setHandlerForButtonSendToken(){
+        let buttonSend = document.getElementById("buttonSendToken");
+        if (buttonSend == null) {
+            return;
+        }
+
+        buttonSend.onclick = sendToken;
+    }
+
+    function printErrorMessage(isLook){
+        let idMsgTErr = document.getElementById("messageTokenError");
+        if (idMsgTErr != null) {
+            idMsgTErr.hidden = !isLook;
+        }
+    }
+
+    function disabledInputAndButtonSendToken(isDisabled){
+        let idInputToken = document.getElementById("inputToken")
+        if (idInputToken != null) {
+            idInputToken.value = "";
+            idInputToken.disabled = isDisabled;
+        }
+
+        let idButtonSendToken = document.getElementById("buttonSendToken")
+        if (idButtonSendToken != null) {
+            idButtonSendToken.disabled = isDisabled;
+        }
+    }
+
+    //обработчик соединений по websocket
+    wsConnect();
+
+    //обработчик на кнопку отправляющую токен на сервер
+    setHandlerForButtonSendToken();
+}

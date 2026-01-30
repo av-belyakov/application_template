@@ -23,3 +23,10 @@ type Messager interface {
 type WriterLoggingData interface {
 	Write(typeLogFile, str string) bool
 }
+
+// ************** передача данных ***************
+type BytesTransmitter interface {
+	SendData([]byte)
+	GetTypeTransmitter() string
+	//ReceiveData() []byte
+}
