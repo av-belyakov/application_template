@@ -10,8 +10,8 @@ import templruntime "github.com/a-h/templ/runtime"
 
 func BaseComponentScripts() templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_BaseComponentScripts_4863`,
-		Function: `function __templ_BaseComponentScripts_4863(){const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+		Name: `__templ_BaseComponentScripts_0f5b`,
+		Function: `function __templ_BaseComponentScripts_0f5b(){const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const wsUrl = ` + "`" + `${wsProtocol}//${window.location.host}/ws` + "`" + `;
     let arrLogs = [];
     let socket = new WebSocket(wsUrl);
@@ -103,21 +103,32 @@ func BaseComponentScripts() templ.ComponentScript {
 		            <div>Хосты по которым осуществляется мониторинг: ${jsonObj.data.count_monitoring_hosts}</div>
 		            <div>Количество ip адресов совпавших с префиксами Netbox: ${jsonObj.data.count_found_ip_to_prefix}</div>
 		            <div>Всего в Netbox найдено префиксов: ${jsonObj.data.count_netbox_prefixes}</div>
-		            <div>Получено из Netbox префиксов: ${jsonObj.data.count_netbox_prefixes_received}</div>
+                    <div>Получено из Netbox префиксов: ${jsonObj.data.count_netbox_prefixes_received}</div>
+		            <div>Префиксы в которых найдено совпадение: ${jsonObj.data.count_netbox_prefixes_matches}</div>
                     <div>Обновленные хосты в Zabbix: ${jsonObj.data.count_updated_zabbix_hosts}</div>
 		            <div>Хосты обработанные с ошибкой: ${jsonObj.data.count_hosts_error}</div>
                     <div>Список доменных имён при обработки которых возникли ошибки:</div>
                     <div style="padding-left: 20px; margin: 10px 0;">
-                        <ol id="listDomainName"></ol>
+                        <table class="table">
+				            <thead>
+					            <tr>
+						            <th scope="col">№</th>
+						            <th scope="col">Доменное имя</th>
+						            <th scope="col">Описание ошибки</th>
+					            </tr>
+				            </thead>
+				            <tbody id="table_body"></tbody>
+                        </table>
                     </div>
                 </div>
             ` + "`" + `
-
-            let listDomainName = document.getElementById("listDomainName");     
-            jsonObj.data.hosts.forEach(host => {
-                let elemLi = document.createElement("li");
-                elemLi.innerHTML = ` + "`" + `<b>${host.name}</b>, error: ${host.error}` + "`" + `; 
-                listDomainName.appendChild(elemLi);
+            let tableBody = document.getElementById("table_body");
+            jsonObj.data.hosts.forEach((host, index) => {
+                let elemTr = document.createElement("tr");
+                elemTr.innerHTML = ` + "`" + `<td>${index+1}</td>
+                                    <th scope="col">${host.name}</th>
+                                    <td>${host.error}</td>` + "`" + `; 
+                tableBody.appendChild(elemTr);
             });
         }
     }
@@ -257,8 +268,8 @@ func BaseComponentScripts() templ.ComponentScript {
     //обработчик на кнопку отправляющую токен на сервер
     setHandlerForButtonSendToken();
 }`,
-		Call:       templ.SafeScript(`__templ_BaseComponentScripts_4863`),
-		CallInline: templ.SafeScriptInline(`__templ_BaseComponentScripts_4863`),
+		Call:       templ.SafeScript(`__templ_BaseComponentScripts_0f5b`),
+		CallInline: templ.SafeScriptInline(`__templ_BaseComponentScripts_0f5b`),
 	}
 }
 

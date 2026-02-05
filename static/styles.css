@@ -7,7 +7,7 @@
 
 body {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  color: #f1f1f1;
+  color: #8b8282;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -41,6 +41,25 @@ h1 {
   font-size: 1.1rem;
   color: #a0a0c0;
   margin-bottom: 30px;
+}
+
+/* Стили таблицы */
+.table {
+  width: 100%;
+  margin-bottom: 20px;
+  border: 1px solid #413e3e;
+  border-collapse: collapse;
+}
+.table th {
+  font-weight: bold;
+  padding: 5px;
+  background: #efefef;
+  border: 1px solid #413e3e;
+}
+.table td {
+  border: 1px solid #413e3e;
+  padding: 5px;
+  background: #efefef;
 }
 
 /* Стили меню */
@@ -99,7 +118,7 @@ nav {
 }
 
 .menu a.active {
-  background: linear-gradient(90deg, #5e72eb, #9c27b0);
+  background: linear-gradient(90deg, #5e72eb, #492192);
   color: white;
   box-shadow: 0 5px 15px rgba(94, 114, 235, 0.4);
 }

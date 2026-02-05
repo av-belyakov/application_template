@@ -8,7 +8,6 @@ templ TemplateBasePage(tbp datamodels.TemplBasePage, component templ.Component, 
 		<head>
 			<meta charset="utf-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<title>{ tbp.Title }</title>
 			<link rel="stylesheet" href="/static/styles.css"/>
 		</head>
 		<body>
@@ -17,12 +16,10 @@ templ TemplateBasePage(tbp datamodels.TemplBasePage, component templ.Component, 
 					<h2>{ tbp.AppName }</h2>
 				</header>
 				<div class="menu-container">
-					<nav>@menuLinks(tbp.MenuLinks)
-</nav>
+					<nav>@menuLinks(tbp.MenuLinks)</nav>
 				</div>
 				<div class="content">
-					<div>@component
-</div>
+					<div>@component</div>
 					@scripts
 				</div>
 			</div>

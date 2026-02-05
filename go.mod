@@ -1,12 +1,13 @@
 module github.com/av-belyakov/application_template
 
-go 1.25.6
+go 1.25.7
 
 require (
 	github.com/a-h/templ v0.3.977
 	github.com/av-belyakov/simplelogger v0.0.0-20250924090323-6ab0607b4a4b
 	github.com/elastic/go-elasticsearch/v8 v8.19.0
 	github.com/go-playground/validator/v10 v10.28.0
+	github.com/gorilla/websocket v1.5.3
 	github.com/joho/godotenv v1.5.1
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.11.1
